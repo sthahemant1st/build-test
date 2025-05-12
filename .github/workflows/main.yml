@@ -29,8 +29,6 @@ jobs:
 
             - name: Build the example
               run: |
-                  sed -i'.bak' -e "/swift-container-plugin/ s@(url:.*),@(path: \"$PWD\"),@" Package.swift   # Use plugin from this checkout
-                  cat Package.swift
                   swift package \
                       -Xswiftc -warnings-as-errors \
                       --swift-sdk x86_64-swift-linux-musl \
