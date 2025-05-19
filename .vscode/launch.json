@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:build_test}",
+            "name": "Debug build_test",
+            "program": "${workspaceFolder:build_test}/.build/debug/build_test",
+            "preLaunchTask": "swift: Build Debug build_test"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:build_test}",
+            "name": "Release build_test",
+            "program": "${workspaceFolder:build_test}/.build/release/build_test",
+            "preLaunchTask": "swift: Build Release build_test"
+        }
+    ]
+}

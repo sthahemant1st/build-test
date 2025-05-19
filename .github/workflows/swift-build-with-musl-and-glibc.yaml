@@ -1,0 +1,49 @@
+name: Swift build with musl and glibc
+
+on:
+    workflow_dispatch:
+    pull_request:
+        branches: [main]
+
+jobs:
+    build-image-glibc:
+        name: Normal swift build i.e. glibc
+        container:
+            image: swift:6.1
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Cache build dependencies
+              uses: actions/cache@v4
+              with:
+                path: .build
+                key: ${{ runner.os }}-build-${{ hashFiles('Package.resolved') }}
+
+            - name: Build
+              run: swift build
+
+    build-image-musl:
+        name: Build image using swift container plugin i.e. musl
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Cache build dependencies
+              uses: actions/cache@v4
+              with:
+                path: .build
+                key: ${{ runner.os }}-build-${{ hashFiles('Package.resolved') }}
+                
+            - name: Install the static SDK
+              run: |
+                  swift sdk install \
+                      https://download.swift.org/swift-6.1-release/static-sdk/swift-6.1-RELEASE/swift-6.1-RELEASE_static-linux-0.0.1.artifactbundle.tar.gz \
+                      --checksum 111c6f7d280a651208b8c74c0521dd99365d785c1976a6e23162f55f65379ac6
+
+            - name: Build 
+              run: |
+                  swift build \
+                      --swift-sdk x86_64-swift-linux-musl
